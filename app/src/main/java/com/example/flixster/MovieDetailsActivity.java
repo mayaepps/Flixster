@@ -18,8 +18,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     TextView tvTitle;
     TextView tvOverview;
     RatingBar rbVoteAverage;
-//    Set the title and overview from the movie
-//    Set the RatingBar value by diving Movie.getVoteAverage by 2.0
+    TextView tvPopularity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +33,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tvTitle = findViewById(R.id.tvTitle);
         tvOverview = findViewById(R.id.tvOverview);
         rbVoteAverage = findViewById(R.id.rbVoteAverage);
+        tvPopularity = findViewById(R.id.tvPopularity);
 
         tvTitle.setText(movie.getTitle());
         tvOverview.setText(movie.getOverview());
+        tvPopularity.setText("Popularity: " + movie.getPopularity());
         //number of stars (out of 5) is half of voteAverage (out of 10)
         float voteAverage = movie.getVoteAverage().floatValue();
         float stars = voteAverage > 0 ? voteAverage / 2.0f : 0;

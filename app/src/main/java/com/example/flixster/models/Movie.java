@@ -22,6 +22,7 @@ public class Movie {
     String title;
     String overview;
     Double voteAverage;
+    Double popularity;
 
     public Movie(JSONObject json) throws JSONException {
         posterPath = json.getString("poster_path");
@@ -29,7 +30,7 @@ public class Movie {
         title = json.getString("title");
         overview = json.getString("overview");
         voteAverage = json.getDouble("vote_average");
-
+        popularity = json.getDouble("popularity");
     }
 
     // Parceler requires no-arg, empty constructor
@@ -64,5 +65,8 @@ public class Movie {
         return voteAverage;
     }
 
+    public Double getPopularity() {
+        return popularity;
+    }
 
 }
