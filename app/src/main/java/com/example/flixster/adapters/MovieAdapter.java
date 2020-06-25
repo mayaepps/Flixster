@@ -1,6 +1,7 @@
 package com.example.flixster.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -15,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.Resource;
+import com.example.flixster.MovieDetailsActivity;
 import com.example.flixster.R;
 import com.example.flixster.models.Movie;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -56,8 +60,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return movies.size();
     }
 
-    //representation of a row/movie in the recycler view
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    //representation of a row/movie in the recycler view (can't be static)
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvTitle;
         TextView tvOverview;
@@ -68,6 +72,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+            //set the onClickListener to this row
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
@@ -87,6 +93,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             }
 
             Glide.with(context).load(imageUrl).placeholder(placeholderImage).into(ivPoster);
+        }
+
+        @Override
+        public void onClick(View view) {
+            // gets item position
+            int position = getAdapterPosition();
+            // make sure the position exists
+            if (position != RecyclerView.NO_POSITION) {
+                // get the movie at the position just clicked on
+                Movie clickedMovie = movies.get(position);
+                // create intent for the new movie details activity
+                Intent intent = new Intent(context, MovieDetailsActivity.class);
+                // serialize the clickedMovie using parceler with its name as the key
+                intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(clickedMovie));
+                //then start the activity
+                context.startActivity(intent);
+
+            }
         }
     }
 }

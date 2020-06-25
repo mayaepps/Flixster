@@ -5,10 +5,13 @@ import com.example.flixster.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Parcel // class is Parcelable
 public class Movie {
 
     public static final int POSTER_PLACEHOLDER = R.drawable.flicks_movie_placeholder;
@@ -18,14 +21,19 @@ public class Movie {
     String posterPath;
     String title;
     String overview;
+    Double voteAverage;
 
     public Movie(JSONObject json) throws JSONException {
         posterPath = json.getString("poster_path");
         backdropPath = json.getString("backdrop_path");
         title = json.getString("title");
         overview = json.getString("overview");
+        voteAverage = json.getDouble("vote_average");
 
     }
+
+    // Parceler requires no-arg, empty constructor
+    public Movie() {}
 
     public static List<Movie> fromJSONArray(JSONArray movieJSONArray) throws JSONException {
         List<Movie> movies = new ArrayList<>();
@@ -44,7 +52,6 @@ public class Movie {
         return String.format("https://image.tmdb.org/t/p/w342/%s", backdropPath);
     }
 
-
     public String getTitle() {
         return title;
     }
@@ -52,5 +59,10 @@ public class Movie {
     public String getOverview() {
         return overview;
     }
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
 
 }
