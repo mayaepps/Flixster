@@ -1,5 +1,7 @@
 package com.example.flixster.models;
 
+import com.example.flixster.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,13 +11,15 @@ import java.util.List;
 
 public class Movie {
 
+    public static final int POSTER_PLACEHOLDER = R.drawable.flicks_movie_placeholder;
+    public static final int BACKDROP_PLACEHOLDER = R.drawable.flicks_backdrop_placeholder;
+
     String backdropPath;
     String posterPath;
     String title;
     String overview;
 
     public Movie(JSONObject json) throws JSONException {
-
         posterPath = json.getString("poster_path");
         backdropPath = json.getString("backdrop_path");
         title = json.getString("title");
