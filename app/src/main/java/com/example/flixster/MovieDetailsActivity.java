@@ -7,11 +7,19 @@ import android.util.Log;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.models.Movie;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.parceler.Parcels;
 
+import okhttp3.Headers;
+
 public class MovieDetailsActivity extends AppCompatActivity {
+
+    public static final String VIDEOS_API_URL = "https://api.themoviedb.org/3/movie/%d/videos?api_key=" + R.string.movie_database_api_key;
 
     Movie movie;
 
@@ -43,5 +51,30 @@ public class MovieDetailsActivity extends AppCompatActivity {
         float stars = voteAverage > 0 ? voteAverage / 2.0f : 0;
         rbVoteAverage.setRating(stars);
 
+        String fullApiKey = String.format(VIDEOS_API_URL, movie.getId());
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(fullApiKey, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JsonHttpResponseHandler.JSON json) {
+                Log.d("MovieDetailsActivity", "onSuccess");
+                try {
+                    JSONArray result = json.jsonObject.getJSONArray("results");
+                    String key = result.getJSONObject(0).getString("key");
+                    Log.i("MovieDetailsActivity", "Key: " + result.toString());
+
+                } catch (JSONException e) {
+                    Log.e("MovieDetailsActivity", "Hit JSON exception", e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.d("MovieDetailsActivity", "onFailure");
+            }
+        });
+
     }
+
+
 }
