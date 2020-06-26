@@ -23,7 +23,10 @@ import okhttp3.Headers;
 public class MainActivity extends AppCompatActivity {
 
     public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=" +
-            R.string.movie_database_api_key;
+            "34f20dcfe993a740e40b25ef2a25e3be";
+//
+//    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=" +
+//            R.string.movie_database_api_key;
 
     public static final String TAG = "MainActivity";
 
@@ -50,13 +53,10 @@ public class MainActivity extends AppCompatActivity {
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.d(TAG, "onSuccess");
                 try {
                     JSONArray results = json.jsonObject.getJSONArray("results");
-                    Log.i(TAG, "Results: " + results.toString());
                     movieList.addAll(Movie.fromJSONArray(results));
                     movieAdapter.notifyDataSetChanged();
-                    Log.i(TAG, "Movies: " + movieList.size());
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit JSON exception", e);
                 }
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.d(TAG, "onFailure");
+                Log.e(TAG, "onFailure: status code " + statusCode);
             }
         });
 
