@@ -40,7 +40,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View movie_view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-        Log.d("MovieAdapter", "onCreateViewHolder");
         return new ViewHolder(movie_view);
     }
 
@@ -52,7 +51,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         // Bind the movie data into the ViewHolder
         holder.bind(movie);
 
-        Log.d("MovieAdapter", "onBindViewHolder " + position);
     }
 
     // Returns the total count of the items in the list
