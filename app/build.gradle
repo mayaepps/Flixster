@@ -43,4 +43,5 @@ dependencies {
 
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
 
+
 }
