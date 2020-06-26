@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.Resource;
+import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.example.flixster.MovieDetailsActivity;
 import com.example.flixster.R;
 import com.example.flixster.models.Movie;
@@ -23,6 +24,8 @@ import com.example.flixster.models.Movie;
 import org.parceler.Parcels;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
@@ -38,7 +41,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View movie_view = LayoutInflater.from(context).inflate( R.layout.item_movie, parent, false);
+        View movie_view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
         Log.d("MovieAdapter", "onCreateViewHolder");
         return new ViewHolder(movie_view);
     }
@@ -92,7 +95,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 placeholderImage = Movie.POSTER_PLACEHOLDER;
             }
 
-            Glide.with(context).load(imageUrl).placeholder(placeholderImage).into(ivPoster);
+            int radius = 30; // corner radius, higher value = more rounded
+            int margin = 10; // crop margin, set to 0 for corners with no crop
+            Glide.with(context).load(imageUrl).placeholder(placeholderImage)
+                    .transform( new RoundedCornersTransformation(radius, margin)).into(ivPoster);
+
         }
 
         @Override
