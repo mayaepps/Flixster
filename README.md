@@ -26,7 +26,9 @@ The following **stretch** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='./walkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='./portraitWalkthrough.gif' title='Portrait Video Walkthrough' width='' alt='Portrait Video Walkthrough' />
+
+<img src='./landscapeWalkthrough.gif' title='Landscape Video Walkthrough' width='' alt='Landscape Video Walkthrough' />
 
 GIF created with [Kap](https://getkap.co/).
 
