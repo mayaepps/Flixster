@@ -38,6 +38,7 @@ public class Movie {
     // Parceler requires no-arg, empty constructor
     public Movie() {}
 
+    // returns a list of movie objects from the JSON array from API
     public static List<Movie> fromJSONArray(JSONArray movieJSONArray) throws JSONException {
         List<Movie> movies = new ArrayList<>();
         for(int i = 0; i < movieJSONArray.length(); i++) {

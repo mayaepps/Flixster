@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.flixster.databinding.ActivityMainBinding;
+import com.example.flixster.databinding.ActivityMovieDetailsBinding;
 import com.example.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -39,44 +41,54 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
+        ActivityMovieDetailsBinding binding = ActivityMovieDetailsBinding.inflate(getLayoutInflater());
+
+        // layout of activity is stored in a special property called root
+        View view = binding.getRoot();
+        setContentView(view);
+
         // unwrap the movie passed in through intent
         movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
 
-        // get and then set the title, overview, and vote average
-        tvTitle = findViewById(R.id.tvTitle);
-        tvOverview = findViewById(R.id.tvOverview);
-        rbVoteAverage = findViewById(R.id.rbVoteAverage);
-        tvPopularity = findViewById(R.id.tvPopularity);
-        ivBackdrop = findViewById(R.id.ivBackdrop);
+        // initialize all the views using view binding
+        tvTitle = binding.tvTitle;
+        tvOverview = binding.tvOverview;
+        rbVoteAverage = binding.rbVoteAverage;
+        tvPopularity = binding.tvPopularity;
+        ivBackdrop = binding.ivBackdrop;
 
+        //set all views using this.movie
         tvTitle.setText(movie.getTitle());
         tvOverview.setText(movie.getOverview());
         tvPopularity.setText("Popularity: " + movie.getPopularity());
-        //number of stars (out of 5) is half of voteAverage (out of 10)
-        float voteAverage = movie.getVoteAverage().floatValue();
+        float voteAverage = movie.getVoteAverage().floatValue(); //number of stars (out of 5) is half of voteAverage (out of 10)
         float stars = voteAverage > 0 ? voteAverage / 2.0f : 0;
         rbVoteAverage.setRating(stars);
 
+        //load the clickable backdrop
         Glide.with(this).load(movie.getBackdropPath()).placeholder(Movie.BACKDROP_PLACEHOLDER).into(ivBackdrop);
 
         String fullApiKey = String.format(VIDEOS_API_URL + getString(R.string.movie_database_api_key), movie.getId());
 
-
+        //call the movie database API and get the key for the YouTube video
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(fullApiKey, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JsonHttpResponseHandler.JSON json) {
                 try {
+                    //parse the array to get the key
                     JSONArray result = json.jsonObject.getJSONArray("results");
                     final String key = result.getJSONObject(0).getString("key");
 
+                    //when backdrop is clicked, start the video
                     ivBackdrop.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
+                            // the intent to go to the MovieTrailerActivity with the key from the API call to the MovieTrailerActivity
                             Intent i = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
-
                             i.putExtra("youtubeKey", key);
+
                             startActivity(i);
                         }
                     });
