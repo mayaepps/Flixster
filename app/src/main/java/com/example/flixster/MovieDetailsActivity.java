@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -72,29 +73,30 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         //call the movie database API and get the key for the YouTube video
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(fullApiKey, new JsonHttpResponseHandler() {
+        client.get(fullApiKey,new JsonHttpResponseHandler(){
             @Override
-            public void onSuccess(int statusCode, Headers headers, JsonHttpResponseHandler.JSON json) {
-                try {
+            public void onSuccess(int statusCode,Headers headers,JsonHttpResponseHandler.JSON json){
+                try{
                     //parse the array to get the key
-                    JSONArray result = json.jsonObject.getJSONArray("results");
-                    final String key = result.getJSONObject(0).getString("key");
+                    JSONArray result=json.jsonObject.getJSONArray("results");
+                    final String key=result.getJSONObject(0).getString("key");
 
                     //when backdrop is clicked, start the video
-                    ivBackdrop.setOnClickListener(new View.OnClickListener() {
+                    ivBackdrop.setOnClickListener(new View.OnClickListener(){
                         @Override
-                        public void onClick(View view) {
+                        public void onClick(View view){
 
                             // the intent to go to the MovieTrailerActivity with the key from the API call to the MovieTrailerActivity
-                            Intent i = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
-                            i.putExtra("youtubeKey", key);
+                            Intent i=new Intent(MovieDetailsActivity.this,MovieTrailerActivity.class);
+                            i.putExtra("youtubeKey",key);
 
                             startActivity(i);
                         }
                     });
 
-                } catch (JSONException e) {
-                    Log.e("MovieDetailsActivity", "Hit JSON exception", e);
+                }catch(JSONException e){
+                    Toast.makeText(MovieDetailsActivity.this, "No video avaliable", Toast.LENGTH_LONG).show();
+                    Log.e("MovieDetailsActivity","Hit JSON exception",e);
                 }
             }
 
@@ -105,6 +107,5 @@ public class MovieDetailsActivity extends AppCompatActivity {
         });
 
     }
-
 
 }
